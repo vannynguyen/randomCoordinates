@@ -7,15 +7,41 @@
 //
 
 #import "DetailViewController.h"
-
+#import "randomAnnotation.h"
 @interface DetailViewController ()
 
 @end
 
 @implementation DetailViewController
+@synthesize mapView;
 
 #pragma mark - Managing the detail item
-
+-(void)setMap{
+    
+    mapView.frame = self.view.bounds;
+    mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    MKCoordinateRegion region;
+    //center
+    CLLocationCoordinate2D center = [self.detailItem coordinate];
+    //span
+    MKCoordinateSpan span;
+    span.latitudeDelta = 0.9f;
+    span.longitudeDelta = 0.9f;
+    
+    region.center = center;
+    region.span = span;
+    
+    //assign region to map
+    [mapView setRegion:region animated:YES];
+    
+    
+    
+    //annotation
+    randomAnnotation *pin = [[randomAnnotation alloc] initWithPosition:center];
+    pin.title = [NSString stringWithFormat:@"Lat: %f Long: %f",center.latitude, center.longitude];
+    [self.mapView addAnnotation:pin];
+}
 - (void)setDetailItem:(id)newDetailItem {
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
@@ -28,12 +54,16 @@
 - (void)configureView {
     // Update the user interface for the detail item.
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+        
+       
+
     }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self setMap];
     // Do any additional setup after loading the view, typically from a nib.
     [self configureView];
 }

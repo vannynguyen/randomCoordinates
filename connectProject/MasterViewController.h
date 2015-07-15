@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <MapKit/MapKit.h>
 @interface MasterViewController : UITableViewController
-
+-(CLLocation *)generateCoords;
+-(float)randomCoord:(int) range;
 
 @end
 
